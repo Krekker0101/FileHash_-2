@@ -1,0 +1,11 @@
+{
+  "ext_count": {
+    "": 3,
+    ".mod": 1,
+    ".sum": 1,
+    ".md": 1,
+    ".go": 12,
+    ".sql": 1
+  },
+  "detected_language": "go"
+}

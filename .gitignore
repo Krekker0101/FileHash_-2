@@ -1,0 +1,9 @@
+uploads/
+data/
+.env
+*.log
+dist/
+coverage/
+.DS_Store
+
+

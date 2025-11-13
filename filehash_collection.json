@@ -1,0 +1,185 @@
+{
+  "info": {
+    "name": "filehash - API",
+    "_postman_id": "filehash-generated-001",
+    "description": "Auto-generated Postman collection for the filehash project. Includes auth flow and token auto-save.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"secret123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"secret123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Save JWT token to environment variable 'authToken' if present",
+              "try {",
+              "  const json = pm.response.json();",
+              "  if (json && json.token) {",
+              "    pm.environment.set('authToken', json.token);",
+              "    console.log('authToken saved');",
+              "  } else if (json && json.access_token) {",
+              "    pm.environment.set('authToken', json.access_token);",
+              "    console.log('access_token saved as authToken');",
+              "  }",
+              "} catch (e) { console.log('no json token'); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "response": []
+    },
+    {
+      "name": "Upload (multipart)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": ""
+            },
+            {
+              "key": "meta",
+              "type": "text",
+              "value": "{\"name\":\"example\"}"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/upload",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "upload"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "JSON → Excel",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rows\": [\n    {\n      \"name\": \"Alice\",\n      \"age\": 30\n    },\n    {\n      \"name\": \"Bob\",\n      \"age\": 25\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/json-to-excel",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "json-to-excel"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Image (decrypted)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/image/{{file_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "image",
+            "{{file_id}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          "// Ensure baseUrl exists",
+          "if (!pm.environment.get('baseUrl')) { pm.environment.set('baseUrl', 'http://localhost:8080'); }"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+openapi: 3.0.0
+info:
+  title: FileHash API
+  version: 1.0.0
+  description: Enterprise-grade encrypted file storage service API
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+paths:
+  /healthz:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+  /upload:
+    post:
+      summary: Upload and encrypt a file
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                user_id:
+                  type: string
+      responses:
+        '201':
+          description: File uploaded successfully
+        '400':
+          description: Bad request
+  /image/{id}:
+    get:
+      summary: Retrieve encrypted image
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Image retrieved
+        '401':
+          description: Unauthorized
+        '404':
+          description: File not found
+
